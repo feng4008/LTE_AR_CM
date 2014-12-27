@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:task="http://www.springframework.org/schema/task"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <!-- 
+  <util:properties id="systemProps" location="classpath:system.properties"/>
+   -->
+  
+  <!-- ${config.dir} is a java environment constant passed to the JVM with the argument -Dconfig.dir="/home/larcmbkp/customise" -->
+  <bean id="dynamicProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="singleton" value="true" />
+    <property name="ignoreResourceNotFound" value="true" />
+    <property name="locations">
+      <list>
+        <value>file:${config.dir}/lar.properties</value>
+        <value>file:${config.dir}/neLoginInfo.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="properties" ref="dynamicProperties" />
+    <property name="ignoreUnresolvablePlaceholders" value="true" />
+    <property name="ignoreResourceNotFound" value="true" />
+  </bean>
+  
+  <bean id="performSSHExecService" class="com.hwacom.util.cm.service.impl.PerformSSHExecServiceImpl">
+  </bean>
+  
+  <bean id="inputStreamToFileService" class="com.hwacom.util.cm.service.impl.InputStreamToFileServiceImpl">
+    <!-- <property name="basePath" value="#{systemProps['basePath']}"/> -->
+    <!-- <property name="basePath" value="${basePath}"/> -->
+  </bean>
+  
+  <bean id="taskManager" class="com.hwacom.util.cm.task.TaskManager">
+    <!-- <property name="TaskExecutor" ref="taskExecutor" /> -->
+    <property name="inputStreamToFileService" ref="inputStreamToFileService"/>
+    <property name="performSSHExecService" ref="performSSHExecService"/>
+    <constructor-arg index="0">
+      <util:properties location="file:${config.dir}/lar.properties" />
+    </constructor-arg>
+    <constructor-arg index="1" value="${userName}" />
+    <constructor-arg index="2" value="${password}" />
+  </bean>
+  
+  <!-- 
+  <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"> 
+    核心線程數，默認為1
+    <property name="corePoolSize" value="10" /> 
+    
+    最大線程數，默認為Integer.MAX_VALUE
+    <property name="maxPoolSize" value="20" /> 
+    
+    隊列最大長度，一般需要設置值>=notifyScheduledMainExecutor.maxNum；默認為Integer.MAX_VALUE
+    <property name="queueCapacity" value="100" /> 
+    
+    線程池維護線程所允許的空閒時間，默認為60s
+    <property name="keepAliveSeconds" value="300" /> 
+    
+    線程池對拒絕任務（無線程可用）的處理策略，目前只支持AbortPolicy、CallerRunsPolicy；默認為後者
+    <property name="rejectedExecutionHandler"> 
+    
+      AbortPolicy:直接拋出java.util.concurrent.RejectedExecutionException異常 
+      CallerRunsPolicy:主線程直接執行該任務，執行完之後嘗試添加下一個任務到線程池中，可以有效降低向線程池內添加任務的速度 
+      DiscardOldestPolicy:拋棄舊的任務、暫不支持；會導致被丟棄的任務無法再次被執行 
+      DiscardPolicy:拋棄當前任務、暫不支持；會導致被丟棄的任務無法再次被執行
+      
+      <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+    </property>
+  </bean>
+   -->
+  
+</beans>

@@ -1,0 +1,11 @@
+alarm a1;
+a1.consecNbr=99999999;
+a1.intId=14700;
+al.notificationId= random_number;
+a1.distinguishedName = "PLMN-PLMN/CMBH-1”
+a1.severity="***";
+a1.flags.used = true;
+a1.alarmTime = SysDate();
+a1.alarmNumber = 9999;
+a1.dxData.alarmText = "Alarm content : LAR Config Backup Failed";
+a1.Send();

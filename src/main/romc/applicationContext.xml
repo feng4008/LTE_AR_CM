@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:task="http://www.springframework.org/schema/task"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+  
+  <!-- <util:properties id="systemProps" location="classpath:system.properties"/> -->
+  
+  <!-- ${config.dir} is a java environment constant passed to the JVM with the argument -Dconfig.dir="/home/larcmbkp/customise" -->
+  <bean id="dynamicProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="singleton" value="true" />
+    <property name="ignoreResourceNotFound" value="true" />
+    <property name="locations">
+      <list>
+        <value>file:${config.dir}/lar.properties</value>
+        <value>file:${config.dir}/neLoginInfo.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="properties" ref="dynamicProperties" />
+    <property name="ignoreUnresolvablePlaceholders" value="true" />
+    <property name="ignoreResourceNotFound" value="true" />
+  </bean>
+  
+  <bean id="performSSHExecService" class="com.hwacom.util.cm.service.impl.PerformSSHExecServiceImpl" />
+  
+  <bean id="inputStreamToFileService" class="com.hwacom.util.cm.service.impl.InputStreamToFileServiceImpl">
+    <!-- <property name="basePath" value="#{systemProps['basePath']}"/> -->
+  </bean>
+  
+  <bean id="taskManager" class="com.hwacom.util.cm.task.TaskManager">
+    <!-- <property name="TaskExecutor" ref="taskExecutor" /> -->
+    <property name="inputStreamToFileService" ref="inputStreamToFileService"/>
+    <property name="performSSHExecService" ref="performSSHExecService"/>
+    <constructor-arg index="0">
+      <util:properties location="file:${config.dir}/lar.properties" />
+    </constructor-arg>
+    <constructor-arg index="1" value="${userName}" />
+    <constructor-arg index="2" value="${password}" />
+  </bean>
+  
+</beans>

@@ -1,0 +1,7 @@
+#!/bin/bash
+clear
+echo "---------Starting Backup Running Configuration---------"
+echo
+java -Xms256m -Xmx512m -Dconfig.dir=./customise -jar ./app/LTE_AR_CM-1.2.jar
+echo
+echo "---------Finished---------"
