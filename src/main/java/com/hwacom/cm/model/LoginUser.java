@@ -1,4 +1,4 @@
-package com.hwacom.util.cm.model;
+package com.hwacom.cm.model;
 
 import java.io.Serializable;
 

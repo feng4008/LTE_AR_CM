@@ -1,4 +1,4 @@
-package com.hwacom.util.cm.service.impl;
+package com.hwacom.cm.service.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +13,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hwacom.util.cm.model.LoginUser;
-import com.hwacom.util.cm.model.RunningConfigTypeEmum;
-import com.hwacom.util.cm.service.InputStreamToFileService;
-import com.hwacom.util.cm.util.FileOperate;
+import com.hwacom.cm.model.LoginUser;
+import com.hwacom.cm.model.RunningConfigTypeEmum;
+import com.hwacom.cm.service.InputStreamToFileService;
+import com.hwacom.cm.util.FileOperate;
 
 public class InputStreamToFileServiceImpl implements InputStreamToFileService {
 	
@@ -62,9 +62,9 @@ public class InputStreamToFileServiceImpl implements InputStreamToFileService {
 
 		try {
 			switch (type) {
-				case ADMIN_SAVE:
-				case RUNNING_SAVE:
-					if (RunningConfigTypeEmum.ADMIN_SAVE.equals(type)) {
+				case CENTRE_DEL:
+				case CENTRE_BACKUP:
+					if (RunningConfigTypeEmum.CENTRE_DEL.equals(type)) {
 					    if (isGlobeUser) {
 	                        path.insert(0, basePath + File.separatorChar + "running-config_backups" + File.separatorChar + "ADMIN");
 	                        deleteFile.insert(0, basePath + File.separatorChar + File.separatorChar + "running-config_backups" + File.separatorChar + "ADMIN");
@@ -74,7 +74,7 @@ public class InputStreamToFileServiceImpl implements InputStreamToFileService {
                             deleteFile.insert(0, basePath + File.separatorChar + "MANUAL-ADMIN");
                             dir = new File(basePath + File.separatorChar + "MANUAL-ADMIN");
 					    }
-					} else if (RunningConfigTypeEmum.RUNNING_SAVE.equals(type)) {
+					} else if (RunningConfigTypeEmum.CENTRE_BACKUP.equals(type)) {
                         if (isGlobeUser) {
                             path.insert(0, basePath + File.separatorChar + "running-config_backups" + File.separatorChar + "RUNNING");
                             deleteFile.insert(0, basePath + File.separatorChar + File.separatorChar + "running-config_backups" + File.separatorChar + "RUNNING");
@@ -119,8 +119,8 @@ public class InputStreamToFileServiceImpl implements InputStreamToFileService {
 						FileOperate.delFile(deleteFile.toString());
 					}
 					break;
-				case ADMIN_LOCAL_BACKUP:
-				case RUNNING_LOCAL_BACKUP:
+				case LAR_DEL:
+				case LAR_BACKUP:
 					break;
 			}
 			result = false;
@@ -147,10 +147,4 @@ public class InputStreamToFileServiceImpl implements InputStreamToFileService {
 			}
 		}
 	}
-
-	/*
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
-	}
-    */
 }

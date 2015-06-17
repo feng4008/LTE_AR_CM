@@ -20,6 +20,7 @@
     <property name="locations">
       <list>
         <value>file:${config.dir}/lar.properties</value>
+        <value>file:${config.dir}/CentreAccountInfo.properties</value>
       </list>
     </property>
   </bean>
@@ -30,16 +31,13 @@
     <property name="ignoreResourceNotFound" value="true" />
   </bean>
   
-  <bean id="performSSHExecService" class="com.hwacom.util.cm.service.impl.PerformSSHExecServiceImpl" />
-  
-  <bean id="inputStreamToFileService" class="com.hwacom.util.cm.service.impl.InputStreamToFileServiceImpl" />
-  
-  <bean id="taskManager" class="com.hwacom.util.cm.task.TaskManager">
-    <property name="inputStreamToFileService" ref="inputStreamToFileService"/>
-    <property name="performSSHExecService" ref="performSSHExecService"/>
+  <bean id="taskManager" class="com.hwacom.cm.task.TaskManager">
     <constructor-arg index="0">
       <util:properties location="file:${config.dir}/lar.properties" />
     </constructor-arg>
+    <constructor-arg index="1" type="java.lang.String" value="${centreLogin}" />
+    <constructor-arg index="2" type="java.lang.String" value="${centrePin}" />
+    <constructor-arg index="3" type="int" value="${identity}" />
   </bean>
   
 </beans>

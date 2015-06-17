@@ -10,17 +10,20 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import ch.ethz.ssh2.Connection;
+import ch.ethz.ssh2.KnownHosts;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
 
-import com.hwacom.util.cm.model.LoginUser;
+import com.hwacom.cm.model.LoginUser;
 
 public class CollectConfigTaskTest {
 
 	public static void main(String[] args) {
+	    
     	//2U1 pilot "10.82.194.247"
     	//local VM "172.16.133.100"
-    	String host = "172.16.133.100";
+    	String hostname = "172.16.133.100";
+    	String username;
     	
     	//2U1 pilot "cht", "NOKIA-3g"
     	//local VM "feng", "2gliodri"
@@ -30,7 +33,47 @@ public class CollectConfigTaskTest {
 		// String[] commands = {"show running-config | file disk0:running-config.bak"};
 
 		try {
-			Connection conn = new Connection(host);
+
+	        
+	        Connection conn = new Connection(hostname);
+	        KnownHosts database = new KnownHosts();
+	        
+	        String[] hostkeyAlgos = database.getPreferredServerHostkeyAlgorithmOrder(hostname);
+	        
+
+	        if (hostkeyAlgos != null)
+	            conn.setServerHostKeyAlgorithms(hostkeyAlgos);
+	        
+            String lastError = null;
+	        
+            while (true) {
+                if (conn.isAuthMethodAvailable(user.getUserName(), "password")) {
+                    
+                    boolean res = conn.authenticateWithPassword(user.getUserName(), user.getPassword());
+
+                    if (res) {
+                        break;
+                    }
+
+                    lastError = "Password authentication failed.";
+
+                    continue;
+                }
+            }
+            
+            Session sess = conn.openSession();
+
+            sess.requestPTY("dumb", 0, 0, 0, 0, null);
+            sess.startShell();
+            
+            
+            
+            
+            
+            
+            
+            
+            
 			conn.connect();
 
 			/*
@@ -47,7 +90,7 @@ public class CollectConfigTaskTest {
 
 			/* Create a session */
 
-			Session sess = conn.openSession();
+			//Session sess = conn.openSession();
 			sess.execCommand("show running-config | file disk0:running-config.bak");
 
 			System.out.println("Here is some information about the remote host:");

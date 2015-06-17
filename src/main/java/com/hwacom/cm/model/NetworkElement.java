@@ -1,8 +1,8 @@
-package com.hwacom.util.cm.model;
+package com.hwacom.cm.model;
 
 import java.io.Serializable;
 
-import com.hwacom.util.cm.model.util.IPAddressValidator;
+import com.hwacom.cm.util.IPAddressValidator;
 
 public class NetworkElement implements Serializable {
 	

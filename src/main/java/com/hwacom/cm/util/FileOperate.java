@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.hwacom.util.cm.util;
+package com.hwacom.cm.util;
 
 import java.io.File;
 import java.io.FileInputStream;

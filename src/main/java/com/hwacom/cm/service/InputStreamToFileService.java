@@ -1,9 +1,9 @@
-package com.hwacom.util.cm.service;
+package com.hwacom.cm.service;
 
 import java.io.InputStream;
 
-import com.hwacom.util.cm.model.LoginUser;
-import com.hwacom.util.cm.model.RunningConfigTypeEmum;
+import com.hwacom.cm.model.LoginUser;
+import com.hwacom.cm.model.RunningConfigTypeEmum;
 
 public interface InputStreamToFileService {
 

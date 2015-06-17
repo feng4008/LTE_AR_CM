@@ -2,6 +2,6 @@
 clear
 echo "---------Starting Backup Running Configuration---------"
 echo
-java -Xms256m -Xmx512m -Dconfig.dir=./customise -jar ./app/LTE_AR_CM-1.2.jar
+java -Xms256m -Xmx512m -Dconfig.dir=./customise -jar ./app/LTE_AR_CM-1.3.ROMC.jar
 echo
 echo "---------Finished---------"

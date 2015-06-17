@@ -25,6 +25,7 @@
       <list>
         <value>file:${config.dir}/lar.properties</value>
         <value>file:${config.dir}/neLoginInfo.properties</value>
+        <value>file:${config.dir}/CentreAccountInfo.properties</value>
       </list>
     </property>
   </bean>
@@ -35,23 +36,15 @@
     <property name="ignoreResourceNotFound" value="true" />
   </bean>
   
-  <bean id="performSSHExecService" class="com.hwacom.util.cm.service.impl.PerformSSHExecServiceImpl">
-  </bean>
-  
-  <bean id="inputStreamToFileService" class="com.hwacom.util.cm.service.impl.InputStreamToFileServiceImpl">
-    <!-- <property name="basePath" value="#{systemProps['basePath']}"/> -->
-    <!-- <property name="basePath" value="${basePath}"/> -->
-  </bean>
-  
-  <bean id="taskManager" class="com.hwacom.util.cm.task.TaskManager">
-    <!-- <property name="TaskExecutor" ref="taskExecutor" /> -->
-    <property name="inputStreamToFileService" ref="inputStreamToFileService"/>
-    <property name="performSSHExecService" ref="performSSHExecService"/>
+  <bean id="taskManager" class="com.hwacom.cm.task.TaskManager">
     <constructor-arg index="0">
       <util:properties location="file:${config.dir}/lar.properties" />
     </constructor-arg>
-    <constructor-arg index="1" value="${userName}" />
-    <constructor-arg index="2" value="${password}" />
+    <constructor-arg index="1" type="java.lang.String" value="${userName}" />
+    <constructor-arg index="2" type="java.lang.String" value="${password}" />
+    <constructor-arg index="3" type="java.lang.String" value="${centreLogin}" />
+    <constructor-arg index="4" type="java.lang.String" value="${centrePin}" />
+    <constructor-arg index="5" type="int" value="${identity}" />
   </bean>
   
   <!-- 

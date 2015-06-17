@@ -1,4 +1,4 @@
-package com.hwacom.util.cm.util;
+package com.hwacom.cm.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

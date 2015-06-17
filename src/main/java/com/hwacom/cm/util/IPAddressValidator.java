@@ -1,4 +1,4 @@
-package com.hwacom.util.cm.model.util;
+package com.hwacom.cm.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,9 +1,9 @@
-package com.hwacom.util.cm;
+package com.hwacom.cm;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.hwacom.util.cm.task.TaskManager;
+import com.hwacom.cm.task.TaskManager;
 
 
 /**
